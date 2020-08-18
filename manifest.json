@@ -1,0 +1,10 @@
+﻿{
+	"Name": "AgricultureAssociation",
+	"Author": "Raff",
+	"Version": "0.0.1",
+	"Description": "Just testing stuff",
+	"UniqueID": "Raff.AgricultureAssociation",
+	"EntryDll": "AgricultureAssociation.dll",
+	"MinimumApiVersion": "3.0.0",
+	"UpdateKeys": []
+}
