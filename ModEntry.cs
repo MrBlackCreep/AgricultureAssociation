@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -26,37 +27,31 @@ namespace AgricultureAssociation
         {
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-            helper.Events.Display.RenderingActiveMenu += OnRenderingActiveMenu;
-            MenuFactory.Mod = this;
-
-
+            helper.Events.Display.RenderingActiveMenu += MenuHandler.OnRenderingActiveMenu;
 
 
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            MenuFactory.Init();
+            MenuHandler.Init();
         }
 
         private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
         {
             // ignore if player hasn't loaded a save yet
-            if (!Context.IsWorldReady || e.Button != SButton.R)
+            if (!Context.IsWorldReady)
                 return;
 
-            Game1.activeClickableMenu = MenuFactory.TestMenu;
-
-
-        }
-
-        private static void OnRenderingActiveMenu(object sender, RenderingActiveMenuEventArgs e)
-        {
-            if (Game1.activeClickableMenu is FrameworkMenu)
+            if (e.Button == SButton.R)
             {
-                e.SpriteBatch.Draw(Game1.fadeToBlackRect, Game1.graphics.GraphicsDevice.Viewport.Bounds, Color.Black * 0.4f);
+                MenuHandler.OpenBoardMainMenu();
             }
+
+
         }
+
+
 
         public void Log(string str)
         {
