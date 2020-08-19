@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomUI\BoardContractMenu.cs" />
+    <Compile Include="CustomUI\BoardHelpMenu.cs" />
     <Compile Include="CustomUI\BoardMainMenu.cs" />
     <Compile Include="CustomUI\BoardShopMenu.cs" />
     <Compile Include="CustomUI\ProgressbarExtra.cs" />

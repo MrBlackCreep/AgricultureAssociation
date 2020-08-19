@@ -15,33 +15,75 @@ namespace AgricultureAssociation.CustomUI
     class BoardMainMenu
     {
         public static FrameworkMenu Menu;
-        private static LabelComponent HeaderText;
-        public static ProgressbarExtra Reputation;
-        public static TextComponent RankDisplay;
-        public static TextComponent RepAmount;
-        private static TextureComponent ContractBg;
+
+        //Constant menu components
+        private static readonly LabelComponent HeaderText = new LabelComponent(new Point(0, -16), "Agricultural Association Board");
+        private static readonly TextComponent SeasonalContracts = new TextComponent(new Point(10, 30), "Active Seasonal Contracts:", true, 1F, Color.LightGoldenrodYellow);
+        private static readonly TextComponent YearlyContracts = new TextComponent(new Point(10, 70), "Active Year-Long Contracts:", true, 1F, Color.LightGoldenrodYellow);
+        private static readonly TextComponent FavorText = new TextComponent(new Point(137, 28), "Current Favor:");
+
+        private static readonly TextureComponent ContractBg = new TextureComponent(new Rectangle(2, 22, 136, 96), Game1.content.Load<Texture2D>("LooseSprites//boardGameBorder"));
+        private static readonly TextureComponent FavorStar = new TextureComponent(new Rectangle(165, 38, 16, 16), Game1.content.Load<Texture2D>("LooseSprites//Cursors").getArea(new Rectangle(294, 392, 16, 16)));
+
+        //Clickable
+        private static readonly ButtonFormComponent ShopButton = new ButtonFormComponent(new Point(142, 90), 35, "Shop", ButtonClick);
+        private static readonly ButtonFormComponent ContractButton = new ButtonFormComponent(new Point(142, 70), 35, "Contracts", ButtonClick);
+        private static readonly ButtonFormComponent HelpButton = new ButtonFormComponent(new Point(165, 113), 12, "Help", ButtonClick);
+
+        //Changing menu components
+        //TODO Add Containers for individual contrac display
+        private static readonly ProgressbarExtra Reputation = new ProgressbarExtra(new Point(8, 4), 0, 160, 10, Color.Gray, Color.DeepSkyBlue);
+        private static readonly TextComponent RankDisplay = new TextComponent(new Point(8, 15), "Current Rank: Neutral");
+        private static readonly TextComponent RepAmount = new TextComponent(new Point(58, 5), "Reputation: 0000/3000", false, 0.25f, Color.BlanchedAlmond);
+        private static readonly TextComponent FavorAmount = new TextComponent(new Point(138, 37), "000", true, 2.5f);
+
+
 
         public static void Init()
         {
-            HeaderText = new LabelComponent(new Point(0, -16), "Agricultural Association Board");
-            Reputation = new ProgressbarExtra(new Point(8,4),0,200,10,Color.Gray,Color.Blue);
-            RankDisplay = new TextComponent(new Point(8,14),"Current Rank: n/a");
-            RepAmount = new TextComponent(new Point(130,14),"Reputation: XXXX/XXXX");
-            ContractBg = new TextureComponent(new Rectangle(0, 20, 120, 80), Game1.content.Load<Texture2D>("LooseSprites//boardGameBorder"));
+            Menu = new FrameworkMenu(new Point(200, 140));
 
-            var menu = new FrameworkMenu(new Point(240, 140));
-            menu.AddComponent(ContractBg);
-            menu.AddComponent(HeaderText);
-            menu.AddComponent(Reputation);
-            menu.AddComponent(RankDisplay);
-            menu.AddComponent(RepAmount);
-            
-            Menu = menu;
+            AddToMenu(ContractBg);
+            AddToMenu(FavorStar);
+            AddToMenu(HeaderText);
+            AddToMenu(FavorText);
+            AddToMenu(SeasonalContracts, 2);
+            AddToMenu(YearlyContracts, 2);
+
+            AddToMenu(Reputation);
+            AddToMenu(RepAmount, 2);
+            AddToMenu(RankDisplay);
+            AddToMenu(FavorAmount);
+            AddToMenu(ContractButton);
+            AddToMenu(ShopButton);
+            AddToMenu(HelpButton);
         }
 
         public static void Update()
         {
+            //TODO Grab data from main class and apply to UI
+        }
+
+        private static void AddToMenu(IMenuComponent comp, int layer = 1)
+        {
+            comp.Layer = layer;
+            Menu.AddComponent(comp);
+        }
+
+        private static void ButtonClick(IInteractiveMenuComponent component, IComponentContainer container, FrameworkMenu menu)
+        {
+            if (component == ContractButton)
+            {
+                Game1.activeClickableMenu = BoardContractMenu.Menu;
+            } else if (component == ShopButton)
+            {
+                Game1.activeClickableMenu = BoardShopMenu.Menu;
+            } else if (component == HelpButton)
+            {
+                Game1.activeClickableMenu = BoardHelpMenu.Menu;
+            }
 
         }
+
     }
 }

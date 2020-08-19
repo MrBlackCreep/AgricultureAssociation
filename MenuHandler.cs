@@ -23,6 +23,7 @@ namespace AgricultureAssociation
             BoardMainMenu.Init();
             BoardContractMenu.Init();
             BoardShopMenu.Init();
+            BoardHelpMenu.Init();
         }
 
         // Render dim background layer
