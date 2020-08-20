@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
+using AgricultureAssociation.CustomUI;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -25,6 +27,7 @@ namespace AgricultureAssociation
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
+            AssociationHandler.Mod = this;
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Display.RenderingActiveMenu += MenuHandler.OnRenderingActiveMenu;
@@ -35,6 +38,11 @@ namespace AgricultureAssociation
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             MenuHandler.Init();
+            AssociationHandler.GenerateCrops();
+            foreach (var element in AssociationHandler.Crops)
+            {
+                this.Monitor.Log(element.Name+": "+element.Difficulty, LogLevel.Warn);
+            }
         }
 
         private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -43,19 +51,24 @@ namespace AgricultureAssociation
             if (!Context.IsWorldReady)
                 return;
 
-            if (e.Button == SButton.R)
-            {
-                MenuHandler.OpenBoardMainMenu();
-            }
+            if (Game1.eventUp && !Game1.currentLocation.currentEvent.playerControlSequence
+                || Game1.currentBillboard != 0 || Game1.activeClickableMenu != null || Game1.menuUp || Game1.nameSelectUp
+                || Game1.IsChatting || Game1.dialogueTyping || Game1.dialogueUp
+                || Game1.player.UsingTool || Game1.pickingTool || Game1.numberOfSelectedItems != -1 || Game1.fadeToBlack || e.Button != SButton.MouseRight)
+                return;
 
+            if (!Game1.currentLocation.Objects.ContainsKey(e.Cursor.GrabTile))
+                return;
+            var craftable = Game1.currentLocation.Objects[e.Cursor.GrabTile];
+            if (!craftable.bigCraftable.Value && craftable.Name == "Raff.AgricultureAssociationJson")
+                return;
+
+            Game1.activeClickableMenu = BoardMainMenu.Menu;
 
         }
 
 
 
-        public void Log(string str)
-        {
-            this.Monitor.Log(str, LogLevel.Debug);
-        }
+
     }
 }

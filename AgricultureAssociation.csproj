@@ -64,6 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Association.cs" />
+    <Compile Include="Contracts\AssociationHandler.cs" />
+    <Compile Include="Contracts\Contract.cs" />
+    <Compile Include="Contracts\ContractElement.cs" />
     <Compile Include="CustomUI\BoardContractMenu.cs" />
     <Compile Include="CustomUI\BoardHelpMenu.cs" />
     <Compile Include="CustomUI\BoardMainMenu.cs" />
