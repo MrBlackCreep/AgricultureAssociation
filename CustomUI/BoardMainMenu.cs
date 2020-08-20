@@ -31,7 +31,7 @@ namespace AgricultureAssociation.CustomUI
         private static readonly ButtonFormComponent HelpButton = new ButtonFormComponent(new Point(165, 113), 12, "Help", ButtonClick);
 
         //Changing menu components
-        //TODO Add Containers for individual contrac display
+        //TODO Add Containers for individual contract display
         private static readonly ProgressbarExtra Reputation = new ProgressbarExtra(new Point(8, 4), 0, 160, 10, Color.Gray, Color.DeepSkyBlue);
         private static readonly TextComponent RankDisplay = new TextComponent(new Point(8, 15), "Current Rank: Neutral");
         private static readonly TextComponent RepAmount = new TextComponent(new Point(58, 5), "Reputation: 0000/3000", false, 0.25f, Color.BlanchedAlmond);
@@ -62,6 +62,23 @@ namespace AgricultureAssociation.CustomUI
         public static void Update()
         {
             //TODO Grab data from main class and apply to UI
+            var a = AssociationHandler.Main;
+            if (a.Rank < 4)
+            {
+                Reputation.Value = (int) (a.Reputation / Association.RepAmounts[a.Rank]) * 160;
+                RepAmount.Label = "Reputation: "+ a.Reputation + "/" + Association.RepAmounts[a.Rank];
+            }
+            else
+            {
+                Reputation.Value = 160;
+                RepAmount.Label = "Reputation at maximum";
+            }
+
+            RankDisplay.Label = "Current Rank: " + Association.RankNames[a.Rank];
+            FavorAmount.Label = a.Favor.ToString();
+
+
+
         }
 
         private static void AddToMenu(IMenuComponent comp, int layer = 1)

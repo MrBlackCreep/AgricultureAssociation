@@ -15,9 +15,11 @@ namespace AgricultureAssociation
 {
     class AssociationHandler
     {
+        public static Association Main;
         public static List<ContractElement> Crops = new List<ContractElement>();
         public static List<ContractElement> Recipes = new List<ContractElement>();
         public static Mod Mod;
+        public static Random Random = new Random();
 
 
 
@@ -51,6 +53,7 @@ namespace AgricultureAssociation
                 crop.Seasons[1] = data[2].Contains("summer");
                 crop.Seasons[2] = data[2].Contains("fall");
                 crop.Seasons[3] = data[2].Contains("winter");
+                crop.SeasonString = data[2];
 
                 double avrgTime = 0.0;
                 double regrowMult = 1;

@@ -20,6 +20,7 @@ namespace AgricultureAssociation
     public class ModEntry : Mod
     {
 
+
         /*********
         ** Public methods
         *********/
@@ -31,6 +32,7 @@ namespace AgricultureAssociation
             helper.Events.Input.ButtonPressed += OnButtonPressed;
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Display.RenderingActiveMenu += MenuHandler.OnRenderingActiveMenu;
+            helper.Events.GameLoop.DayStarted += OnDayStarted;
 
 
         }
@@ -39,10 +41,8 @@ namespace AgricultureAssociation
         {
             MenuHandler.Init();
             AssociationHandler.GenerateCrops();
-            foreach (var element in AssociationHandler.Crops)
-            {
-                this.Monitor.Log(element.Name+": "+element.Difficulty, LogLevel.Warn);
-            }
+            AssociationHandler.Main = new Association();
+
         }
 
         private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -63,7 +63,16 @@ namespace AgricultureAssociation
             if (!craftable.bigCraftable.Value && craftable.Name == "Raff.AgricultureAssociationJson")
                 return;
 
+            BoardMainMenu.Update();
             Game1.activeClickableMenu = BoardMainMenu.Menu;
+        }
+
+        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        {
+            if (Game1.dayOfMonth < 6)
+            {
+                AssociationHandler.Main.GenerateSeasonalContracts();
+            }
 
         }
 

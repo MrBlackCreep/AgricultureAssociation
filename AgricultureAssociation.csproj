@@ -64,7 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Association.cs" />
+    <Compile Include="Contracts\Association.cs" />
     <Compile Include="Contracts\AssociationHandler.cs" />
     <Compile Include="Contracts\Contract.cs" />
     <Compile Include="Contracts\ContractElement.cs" />
