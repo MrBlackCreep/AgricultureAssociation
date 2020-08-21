@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AgricultureAssociation.Contracts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NCalc.Domain;
 using PyTK.Extensions;
 using StardewModdingAPI;
 using StardewValley;
@@ -19,7 +20,8 @@ namespace AgricultureAssociation
         public static List<ContractElement> Crops = new List<ContractElement>();
         public static List<ContractElement> Recipes = new List<ContractElement>();
         public static Mod Mod;
-        public static Random Random = new Random();
+        public static readonly Random Random = new Random();
+        private static readonly string[] blacklist = {"Starfruit","Cactus Fruit", "Sweet Gem Berry", "Ancient Fruit"};
 
 
 
@@ -41,12 +43,28 @@ namespace AgricultureAssociation
                 if (obj.TryGetValue(crop.ItemId, out string value))
                 {
                     crop.Name = value.Split('/')[0];
+
+                    bool blacklistTest = false;
+                    foreach (var str in blacklist)
+                    {
+                        if (value.Split('/')[0].Contains(str))
+                        {
+                            blacklistTest = true;
+                        }
+                    }
+
+                    if (value.Split('/')[3].Contains("-81") || blacklistTest)
+                    {
+                        continue;
+                    }
                 }
                 else
                 {
                     Mod.Monitor.Log("Couldn't find object associated with ID: "+crop.ItemId, LogLevel.Error);
 
                 }
+                
+
 
                 crop.Sprite = Game1.content.Load<Texture2D>("Maps//springobjects").getTile(crop.ItemId);
                 crop.Seasons[0] = data[2].Contains("spring");
@@ -79,6 +97,17 @@ namespace AgricultureAssociation
                 Crops.Add(crop);
             }
 
+        }
+
+        public static string StaticDigits(int i, int amount)
+        {
+            var str = i.ToString();
+            while (str.Length < amount)
+            {
+                str = "0" + str;
+            }
+
+            return str;
         }
     }
 }

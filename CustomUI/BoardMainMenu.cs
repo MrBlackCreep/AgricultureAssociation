@@ -75,7 +75,7 @@ namespace AgricultureAssociation.CustomUI
             }
 
             RankDisplay.Label = "Current Rank: " + Association.RankNames[a.Rank];
-            FavorAmount.Label = a.Favor.ToString();
+            FavorAmount.Label = AssociationHandler.StaticDigits(a.Favor, 3);
 
 
 
@@ -89,8 +89,9 @@ namespace AgricultureAssociation.CustomUI
 
         private static void ButtonClick(IInteractiveMenuComponent component, IComponentContainer container, FrameworkMenu menu)
         {
-            if (component == ContractButton)
+            if (component == ContractButton && Game1.dayOfMonth < 6)
             {
+                
                 Game1.activeClickableMenu = BoardContractMenu.Menu;
             } else if (component == ShopButton)
             {

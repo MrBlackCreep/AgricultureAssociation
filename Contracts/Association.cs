@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using AgricultureAssociation.Contracts;
+using AgricultureAssociation.CustomUI;
 using StardewModdingAPI;
 using StardewValley;
 
@@ -76,6 +77,7 @@ namespace AgricultureAssociation
             }
 
             AvailableContracts = contractList;
+            BoardContractMenu.Update();
 
             foreach (var c in AvailableContracts)
             {
