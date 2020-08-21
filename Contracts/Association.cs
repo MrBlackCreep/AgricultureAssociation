@@ -19,7 +19,7 @@ namespace AgricultureAssociation
         public double Reputation = 0;
         public int Rank = 0;
         public int Favor = 0;
-        public List<Contract> ActiveContracts;
+        public List<Contract> ActiveContracts = new List<Contract>(5);
         public List<Contract> AvailableContracts;
 
         public void AddRep(int amount)
@@ -62,7 +62,7 @@ namespace AgricultureAssociation
             for (int i = 0; i < 8; i++)
             {
                 var newContract = new Contract(options[AssociationHandler.Random.Next(0, options.Count)]);
-                newContract.AmountNeeded = (int) ((double) (1 + Rank) / 4 + 1) * AssociationHandler.Random.Next(15, 60);
+                newContract.AmountNeeded = (int) (((double) (1 + Rank) / 4 + 1) * AssociationHandler.Random.Next(15, 60) * newContract.Item.Yield);
                 if (i > 3)
                 {
                     newContract.AmountNeeded = (int) (newContract.AmountNeeded * (AssociationHandler.Random.NextDouble() + 1.5));
@@ -70,7 +70,7 @@ namespace AgricultureAssociation
 
                 var rand = AssociationHandler.Random.NextDouble()/2;
                 newContract.RewardFavor = (int) (newContract.Item.Difficulty * newContract.AmountNeeded *
-                                          (rand + 1) / 15);
+                                          (rand + 1) / 20);
                 newContract.RewardReputation = (int) (newContract.Item.Difficulty * newContract.AmountNeeded *
                                                       ((rand-0.5)*-1 + 1) / 2);
                 contractList.Add(newContract);

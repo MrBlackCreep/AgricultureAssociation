@@ -21,7 +21,6 @@ namespace AgricultureAssociation
         public static void Init()
         {
             BoardMainMenu.Init();
-            BoardContractMenu.Init();
             BoardShopMenu.Init();
             BoardHelpMenu.Init();
         }

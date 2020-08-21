@@ -21,7 +21,7 @@ namespace AgricultureAssociation
         public static List<ContractElement> Recipes = new List<ContractElement>();
         public static Mod Mod;
         public static readonly Random Random = new Random();
-        private static readonly string[] blacklist = {"Starfruit","Cactus Fruit", "Sweet Gem Berry", "Ancient Fruit"};
+        private static readonly string[] Blacklist = {"Starfruit","Cactus Fruit", "Sweet Gem Berry", "Ancient Fruit"};
 
 
 
@@ -45,7 +45,7 @@ namespace AgricultureAssociation
                     crop.Name = value.Split('/')[0];
 
                     bool blacklistTest = false;
-                    foreach (var str in blacklist)
+                    foreach (var str in Blacklist)
                     {
                         if (value.Split('/')[0].Contains(str))
                         {
@@ -84,7 +84,7 @@ namespace AgricultureAssociation
 
                 if (int.Parse(data[4]) != -1)
                 {
-                    regrowMult = 15 / (double)int.Parse(data[4]);
+                    regrowMult = 1.25;
                 }
 
                 if (data[5].Contains("true"))
@@ -92,8 +92,9 @@ namespace AgricultureAssociation
                     var num = data[5].Split(' ');
                     avrgYield = (double) (int.Parse(num[1]) + int.Parse(num[2])) / 2;
                 }
+                crop.Difficulty = avrgTime / avrgYield / regrowMult ;
+                crop.Yield = avrgYield;
 
-                crop.Difficulty = (avrgTime / avrgYield) / regrowMult ;
                 Crops.Add(crop);
             }
 

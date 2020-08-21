@@ -15,6 +15,7 @@ namespace AgricultureAssociation.Contracts
         public bool[] Seasons = new bool[4];
         public string SeasonString;
         public double Difficulty;
+        public double Yield;
 
     }
 }
