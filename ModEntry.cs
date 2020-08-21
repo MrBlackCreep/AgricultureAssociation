@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using AgricultureAssociation.CustomUI;
@@ -12,6 +13,7 @@ using Entoarox.Framework;
 using Entoarox.Framework.UI;
 using Microsoft.Xna.Framework.Graphics;
 using LogLevel = StardewModdingAPI.LogLevel;
+using Newtonsoft.Json;
 
 namespace AgricultureAssociation
 
@@ -33,15 +35,33 @@ namespace AgricultureAssociation
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Display.RenderingActiveMenu += MenuHandler.OnRenderingActiveMenu;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.Saving += OnSave;
 
 
+        }
+
+        private void OnSave(object sender, SavingEventArgs e)
+        {
+            string jsonString = JsonConvert.SerializeObject(AssociationHandler.Main);
+            File.WriteAllText(Constants.CurrentSavePath+"//AgricultureAssocation.json", jsonString);
         }
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
             MenuHandler.Init();
             AssociationHandler.GenerateCrops();
-            AssociationHandler.Main = new Association();
+            string jsonString;
+            try
+            {
+                jsonString = File.ReadAllText(Constants.CurrentSavePath + "//AgricultureAssocation.json");
+            }
+            catch
+            {
+                AssociationHandler.Main = new Association();
+                return;
+            } 
+
+            AssociationHandler.Main = JsonConvert.DeserializeObject<Association>(jsonString);
 
         }
 
@@ -69,7 +89,7 @@ namespace AgricultureAssociation
 
         private void OnDayStarted(object sender, DayStartedEventArgs e)
         {
-            if (Game1.dayOfMonth < 6)
+            if (Game1.dayOfMonth < 60)
             {
                 AssociationHandler.Main.GenerateSeasonalContracts();
             }

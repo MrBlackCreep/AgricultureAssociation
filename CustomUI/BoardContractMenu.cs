@@ -91,7 +91,7 @@ namespace AgricultureAssociation.CustomUI
         private static List<IMenuComponent> GenerateContractComponent(Contract c, Point pos)
         {
             List<IMenuComponent> r = new List<IMenuComponent>();
-            r.Add(new TextureComponent(new Rectangle(pos.X + 22, pos.Y + 10, 16,16),c.Item.Sprite));
+            r.Add(new TextureComponent(new Rectangle(pos.X + 22, pos.Y + 10, 16,16), Game1.content.Load<Texture2D>("Maps//springobjects").getTile(c.Item.ItemId)));
             r.Add(new TextComponent(new Point(pos.X + 10, pos.Y+ 18),AssociationHandler.StaticDigits(c.AmountNeeded, 3) +"x",true, 1.25f));
             r.Add(new TextComponent(new Point(pos.X +15, pos.Y+30),AssociationHandler.StaticDigits(c.RewardFavor, 3)));
             r.Add(new TextureComponent(new Rectangle(pos.X + 26, pos.Y+29,8,8), Game1.content.Load<Texture2D>("LooseSprites//Cursors").getArea(new Rectangle(294, 392, 16, 16))));

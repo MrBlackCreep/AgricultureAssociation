@@ -65,8 +65,6 @@ namespace AgricultureAssociation
                 }
                 
 
-
-                crop.Sprite = Game1.content.Load<Texture2D>("Maps//springobjects").getTile(crop.ItemId);
                 crop.Seasons[0] = data[2].Contains("spring");
                 crop.Seasons[1] = data[2].Contains("summer");
                 crop.Seasons[2] = data[2].Contains("fall");

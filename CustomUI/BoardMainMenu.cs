@@ -65,7 +65,7 @@ namespace AgricultureAssociation.CustomUI
             var a = AssociationHandler.Main;
             if (a.Rank < 4)
             {
-                Reputation.Value = (int) (a.Reputation / Association.RepAmounts[a.Rank]) * 160;
+                Reputation.Value = (int) (a.Reputation / Association.RepAmounts[a.Rank] * 160);
                 RepAmount.Label = "Reputation: "+ a.Reputation + "/" + Association.RepAmounts[a.Rank];
             }
             else
@@ -89,7 +89,7 @@ namespace AgricultureAssociation.CustomUI
 
         private static void ButtonClick(IInteractiveMenuComponent component, IComponentContainer container, FrameworkMenu menu)
         {
-            if (component == ContractButton && Game1.dayOfMonth < 6)
+            if (component == ContractButton && Game1.dayOfMonth < 60)
             {
                 
                 Game1.activeClickableMenu = BoardContractMenu.Menu;
@@ -98,6 +98,7 @@ namespace AgricultureAssociation.CustomUI
                 Game1.activeClickableMenu = BoardShopMenu.Menu;
             } else if (component == HelpButton)
             {
+                AssociationHandler.Main.Reputation += 100;
                 Game1.activeClickableMenu = BoardHelpMenu.Menu;
             }
 

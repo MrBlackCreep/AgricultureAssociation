@@ -11,7 +11,7 @@ namespace AgricultureAssociation.Contracts
     {
         public string Name;
         public int ItemId;
-        public Texture2D Sprite;
+
         public bool[] Seasons = new bool[4];
         public string SeasonString;
         public double Difficulty;
