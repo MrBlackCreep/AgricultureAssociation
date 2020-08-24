@@ -5,6 +5,7 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using AgricultureAssociation.Contracts;
+using StardewValley;
 
 namespace AgricultureAssociation
 {
@@ -15,6 +16,7 @@ namespace AgricultureAssociation
         public int AmountReceived = 0;
         public int RewardReputation;
         public int RewardFavor;
+        public bool Completed = false;
 
         public Contract(ContractElement item)
         {

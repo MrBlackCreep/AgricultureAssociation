@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Entoarox.Framework.UI;
+using Ionic.Zip;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using PyTK.Extensions;
@@ -148,7 +149,16 @@ namespace AgricultureAssociation.CustomUI
             Bg[AwaitingConfirmationPos].Visible = false;
             AwaitingConfirmation = null;
             AwaitingConfirmationPos = -1;
-            Game1.activeClickableMenu = Menu;
+            BoardMainMenu.Init();
+
+            if (AssociationHandler.Main.AvailableContracts.Count >= 5)
+            {
+                Game1.activeClickableMenu = BoardMainMenu.Menu;
+            }
+            else
+            {
+                Game1.activeClickableMenu = Menu;
+            }
         }
 
         private static void OnDecline(IInteractiveMenuComponent component, IComponentContainer container,

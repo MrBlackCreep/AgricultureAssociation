@@ -11,6 +11,8 @@ namespace AgricultureAssociation.CustomUI
 {
     class BoardShopMenu
     {
+        //TODO Everything
+
         public static FrameworkMenu Menu;
 
         public static void Init()

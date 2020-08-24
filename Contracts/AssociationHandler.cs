@@ -108,5 +108,40 @@ namespace AgricultureAssociation
 
             return str;
         }
+
+        public static void AddShipment(Item item)
+        {
+            int stack = item.Stack;
+            foreach (var contract in Main.ActiveContracts)
+            {
+                if (contract.Item.Name.Equals(item.Name))
+                {
+                    if (stack + contract.AmountReceived >= contract.AmountNeeded)
+                    {
+                        contract.AmountReceived = contract.AmountNeeded;
+                        stack += -(contract.AmountNeeded - contract.AmountReceived);
+                    }
+                    else
+                    {
+                        contract.AmountReceived += stack;
+                        stack = 0;
+                    }
+                }
+            }
+        }
+
+        public static void CheckContracts()
+        {
+            foreach (var contract in Main.ActiveContracts)
+            {
+                if (!contract.Completed && contract.AmountNeeded == contract.AmountReceived)
+                {
+                    contract.Completed = true;
+                    Game1.addHUDMessage(new HUDMessage("Completed contract for " +contract.AmountNeeded+ "x "+ contract.Item.Name , 1));
+                    Main.AddFavor(contract.RewardFavor);
+                    Main.AddRep(contract.RewardReputation);
+                }
+            }
+        }
     }
 }

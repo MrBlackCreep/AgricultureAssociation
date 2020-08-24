@@ -34,17 +34,6 @@ namespace AgricultureAssociation
             }
         }
 
-        public static void OpenBoardMainMenu()
-        {
-            //TODO this will need to be removed later DEBUG ONLY
-            BoardMainMenu.Menu.ClearComponents();
-            BoardMainMenu.Init();
-
-
-            Game1.activeClickableMenu = BoardMainMenu.Menu;
-        }
-
-
 
     }
 }

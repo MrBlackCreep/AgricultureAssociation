@@ -35,6 +35,7 @@ namespace AgricultureAssociation
             helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
             helper.Events.Display.RenderingActiveMenu += MenuHandler.OnRenderingActiveMenu;
             helper.Events.GameLoop.DayStarted += OnDayStarted;
+            helper.Events.GameLoop.DayEnding += OnDayEnded;
             helper.Events.GameLoop.Saving += OnSave;
 
 
@@ -48,7 +49,6 @@ namespace AgricultureAssociation
 
         private void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         {
-            MenuHandler.Init();
             AssociationHandler.GenerateCrops();
             string jsonString;
             try
@@ -87,17 +87,35 @@ namespace AgricultureAssociation
             Game1.activeClickableMenu = BoardMainMenu.Menu;
         }
 
-        private void OnDayStarted(object sender, DayStartedEventArgs e)
+        private static void OnDayStarted(object sender, DayStartedEventArgs e)
         {
+            AssociationHandler.CheckContracts();
+            MenuHandler.Init();
+
+            //TODO DEBUG
             if (Game1.dayOfMonth < 60)
             {
                 AssociationHandler.Main.GenerateSeasonalContracts();
             }
 
+            if (Game1.dayOfMonth == 1)
+            {
+                //TODO Resolve penalties
+            }
         }
 
-
-
-
+        private static void OnDayEnded(object sender, DayEndingEventArgs e)
+        {
+            var items = Game1.getFarm().getShippingBin(Game1.player);
+            foreach (var item in items)
+            {
+                foreach (var contract in AssociationHandler.Main.ActiveContracts)
+                {
+                    if (!item.Name.Equals(contract.Item.Name)) continue;
+                    AssociationHandler.AddShipment(item);
+                    break;
+                }
+            }
+        }
     }
 }

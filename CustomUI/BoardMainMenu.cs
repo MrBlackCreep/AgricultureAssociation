@@ -14,7 +14,7 @@ namespace AgricultureAssociation.CustomUI
 {
     class BoardMainMenu
     {
-        public static FrameworkMenu Menu;
+        public static FrameworkMenu Menu = new FrameworkMenu(new Point(200, 140));
 
         //Constant menu components
         private static readonly LabelComponent HeaderText = new LabelComponent(new Point(0, -16), "Agricultural Association Board");
@@ -41,6 +41,7 @@ namespace AgricultureAssociation.CustomUI
 
         public static void Init()
         {
+            Menu.ClearComponents();
             Menu = new FrameworkMenu(new Point(200, 140));
 
             AddToMenu(ContractBg);
@@ -49,7 +50,6 @@ namespace AgricultureAssociation.CustomUI
             AddToMenu(FavorText);
             AddToMenu(SeasonalContracts, 2);
             AddToMenu(YearlyContracts, 2);
-
             AddToMenu(Reputation);
             AddToMenu(RepAmount, 2);
             AddToMenu(RankDisplay);
@@ -57,11 +57,29 @@ namespace AgricultureAssociation.CustomUI
             AddToMenu(ContractButton);
             AddToMenu(ShopButton);
             AddToMenu(HelpButton);
+
+            //TODO yearly contracts
+            AddToMenu(new TextComponent(new Point(35,80),"W.I.P.",true,4F),3);
+
+            if (AssociationHandler.Main == null)
+            {
+                return;
+            }
+
+            int i = 0;
+            foreach (var contract in AssociationHandler.Main.ActiveContracts)
+            {
+                foreach (var component in CreateContractBlob(i, contract))
+                {
+                    AddToMenu(component, 3);
+                }
+
+                i++;
+            }
         }
 
         public static void Update()
         {
-            //TODO Grab data from main class and apply to UI
             var a = AssociationHandler.Main;
             if (a.Rank < 4)
             {
@@ -79,6 +97,7 @@ namespace AgricultureAssociation.CustomUI
 
 
 
+
         }
 
         private static void AddToMenu(IMenuComponent comp, int layer = 1)
@@ -89,9 +108,9 @@ namespace AgricultureAssociation.CustomUI
 
         private static void ButtonClick(IInteractiveMenuComponent component, IComponentContainer container, FrameworkMenu menu)
         {
-            if (component == ContractButton && Game1.dayOfMonth < 60)
+            //TODO DEBUG
+            if (component == ContractButton && Game1.dayOfMonth < 60 && AssociationHandler.Main.ActiveContracts.Count < 5)
             {
-                
                 Game1.activeClickableMenu = BoardContractMenu.Menu;
             } else if (component == ShopButton)
             {
@@ -103,6 +122,20 @@ namespace AgricultureAssociation.CustomUI
             }
 
         }
+
+        private static List<IMenuComponent> CreateContractBlob(int count, Contract contract)
+        {
+            List<IMenuComponent> r = new List<IMenuComponent>();
+            r.Add(new TextureComponent(new Rectangle(count*25 + 10, 40 , 16, 16), Game1.content.Load<Texture2D>("Maps//springobjects").getTile(contract.Item.ItemId)));
+            r.Add(new TextComponent(new Point(count*25 + 10, 55),AssociationHandler.StaticDigits(contract.AmountReceived, 3)));
+            r.Add(new TextComponent(new Point(count*25 + 13, 61), "/"+AssociationHandler.StaticDigits(contract.AmountNeeded,3)));
+
+            if (contract.Completed)
+            {
+                AddToMenu(new TextureComponent(new Rectangle(count * 25 + 9, 49, 19, 8), Game1.content.Load<Texture2D>("LooseSprites//Cursors").getArea(new Rectangle(340, 409, 25,11))),5);
+            }
+            return r;
+        } 
 
     }
 }
