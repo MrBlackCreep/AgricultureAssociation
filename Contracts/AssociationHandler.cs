@@ -143,5 +143,34 @@ namespace AgricultureAssociation
                 }
             }
         }
+
+        public static void CloseContracts()
+        {
+            foreach (var contract in Main.ActiveContracts)
+            {
+                if (!contract.Completed)
+                {
+                    Game1.addHUDMessage(new HUDMessage("Failed contract for " + contract.AmountNeeded + "x " + contract.Item.Name + ". Penalty issued.", 3));
+                    if (Main.Favor < contract.RewardFavor)
+                    {
+                        Main.Favor = 0;
+                    }
+                    else
+                    {
+                        Main.Favor += -contract.RewardFavor;
+                    }
+
+                    if (Main.Reputation < contract.RewardReputation)
+                    {
+                        Main.Reputation = 0;
+                    }
+                    else
+                    {
+                        Main.Reputation += -contract.RewardReputation;
+                    }
+                }
+            }
+            Main.ActiveContracts = new List<Contract>(0);
+        }
     }
 }

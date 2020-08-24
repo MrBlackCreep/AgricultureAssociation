@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -100,7 +101,7 @@ namespace AgricultureAssociation
 
             if (Game1.dayOfMonth == 1)
             {
-                //TODO Resolve penalties
+                AssociationHandler.CloseContracts();
             }
         }
 
