@@ -22,6 +22,14 @@ namespace AgricultureAssociation
         public List<Contract> ActiveContracts = new List<Contract>(0);
         public List<Contract> AvailableContracts;
 
+        public bool Care;
+        public bool Speed;
+
+        public bool Eval;
+        public bool Banquet;
+
+
+
         public void AddRep(int amount)
         {
             if (amount + Reputation > RepAmounts[Rank])

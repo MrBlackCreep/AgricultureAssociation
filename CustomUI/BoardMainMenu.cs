@@ -117,7 +117,6 @@ namespace AgricultureAssociation.CustomUI
                 Game1.activeClickableMenu = BoardShopMenu.Menu;
             } else if (component == HelpButton)
             {
-                AssociationHandler.Main.Reputation += 100;
                 Game1.activeClickableMenu = BoardHelpMenu.Menu;
             }
 
